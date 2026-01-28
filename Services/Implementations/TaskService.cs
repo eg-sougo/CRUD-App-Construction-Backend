@@ -1,110 +1,170 @@
-﻿using ConstructionBackend1._0.DTOs.Tasks;
+﻿using ConstructionBackend1._0.Data;
+using ConstructionBackend1._0.DTOs.Tasks;
 using ConstructionBackend1._0.Models;
 using ConstructionBackend1._0.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace ConstructionBackend1._0.Controllers
+namespace ConstructionBackend1._0.Services.Implementations
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class TasksController : ControllerBase
+    public class TaskService : ITaskService
     {
-        private readonly ITaskService _taskService;
-        private readonly ILogger<TasksController> _logger;
+        private readonly ConstructionDbContext _context;
+        private readonly ILogger<TaskService> _logger;
 
-        public TasksController(ITaskService taskService, ILogger<TasksController> logger)
+        public TaskService(ConstructionDbContext context, ILogger<TaskService> logger)
         {
-            _taskService = taskService;
+            _context = context;
             _logger = logger;
         }
 
-        // GET: api/tasks
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ResponseTaskDto>>> GetAllTasks()
+        // 1️⃣ CREATE TASK
+        public async Task<TaskItem> CreateTask(CreateTaskDto task)
         {
-            _logger.LogInformation("GET api/tasks called");
+            _logger.LogInformation("Creating task {TaskName} for ProjectId={ProjectId}", task.TaskName, task.ProjectId);
 
-            var tasks = await _taskService.GetAllTask();
+            try
+            {
+                var newTask = new TaskItem
+                {
+                    TaskName = task.TaskName,
+                    Description = task.Description,
+                    StartDate = task.StartDate,
+                    DueDate = task.DueDate,
+                    ProjectId = task.ProjectId,
+                    AssignedTo = task.AssignedTo,
+                    Status = "Planned"
+                };
 
-            _logger.LogInformation("GET api/tasks completed");
+                _context.Tasks.Add(newTask);
+                await _context.SaveChangesAsync();
 
-            return Ok(tasks);
+                _logger.LogInformation("Task created successfully with TaskItemId={TaskItemId}", newTask.TaskItemId);
+
+                return newTask;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while creating task {TaskName}", task.TaskName);
+                throw;
+            }
         }
 
-        // GET: api/tasks/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseTaskDto>> GetTaskById(int id)
+        // 2️⃣ GET ALL TASKS
+        public async Task<IEnumerable<ResponseTaskDto>> GetAllTask()
         {
-            _logger.LogInformation("GET api/tasks/{Id} called", id);
+            _logger.LogInformation("Fetching all tasks");
 
-            var task = await _taskService.GetTaskById(id);
+            try
+            {
+                var tasks = await _context.Tasks
+                    .Select(t => new ResponseTaskDto
+                    {
+                        TaskItemId = t.TaskItemId,
+                        TaskName = t.TaskName,
+                        Status = t.Status,
+                        ProjectName = t.Project.ProjectName,
+                        EngineerName = t.Engineer.FullName
+                    })
+                    .ToListAsync();
+
+                _logger.LogInformation("Fetched {Count} tasks", tasks.Count);
+
+                return tasks;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching all tasks");
+                throw;
+            }
+        }
+
+        // 3️⃣ GET TASK BY ID
+        public async Task<ResponseTaskDto?> GetTaskById(int id)
+        {
+            _logger.LogInformation("Fetching task with Id={TaskId}", id);
+
+            var task = await _context.Tasks.Include(t => t.Project).Include(t => t.Engineer).FirstOrDefaultAsync(t => t.TaskItemId == id);
 
             if (task == null)
             {
-                _logger.LogWarning("Task not found with Id={Id}", id);
-                return NotFound();
+                _logger.LogWarning("Task not found with Id={TaskId}", id);
+                return null;
             }
 
-            return Ok(task);
-        }
+            _logger.LogInformation("Task found with Id={TaskId}", id);
 
-        // GET: api/tasks/project/3
-        [HttpGet("project/{projectId}")]
-        public async Task<ActionResult<IEnumerable<TaskItem>>> GetTasksByProject(int projectId)
-        {
-            _logger.LogInformation("GET api/tasks/project/{ProjectId} called", projectId);
-
-            var tasks = await _taskService.GetTaskByProjectId(projectId);
-
-            return Ok(tasks);
-        }
-
-        // POST: api/tasks
-        [HttpPost]
-        public async Task<ActionResult<TaskItem>> CreateTask(CreateTaskDto dto)
-        {
-            _logger.LogInformation("POST api/tasks called for ProjectId={ProjectId}", dto.ProjectId);
-
-            var task = await _taskService.CreateTask(dto);
-
-            _logger.LogInformation("Task created via API with Id={TaskId}", task.TaskItemId);
-
-            return CreatedAtAction(nameof(GetTaskById), new { id = task.TaskItemId }, task);
-        }
-
-        // PUT: api/tasks/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTask(int id, UpdateTaskDto dto)
-        {
-            _logger.LogInformation("PUT api/tasks/{Id} called", id);
-
-            var updated = await _taskService.UpdateAsync(id, dto);
-
-            if (!updated)
+            return new ResponseTaskDto
             {
-                _logger.LogWarning("Update failed. Task not found Id={Id}", id);
-                return NotFound();
-            }
-
-            return NoContent();
+                TaskItemId = task.TaskItemId,
+                TaskName = task.TaskName,
+                Status = task.Status,
+                StartDate = task.StartDate,
+                DueDate = task.DueDate,
+                ProjectId = task.ProjectId,
+                ProjectName = task.Project.ProjectName,
+                EngineerId = task.AssignedTo,
+                EngineerName = task.Engineer.FullName
+            };
         }
 
-        // DELETE: api/tasks/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTask(int id)
+        // 4️⃣ GET TASKS BY PROJECT ID
+        public async Task<IEnumerable<TaskItem>> GetTaskByProjectId(int projectId)
         {
-            _logger.LogInformation("DELETE api/tasks/{Id} called", id);
+            _logger.LogInformation("Fetching tasks for ProjectId={ProjectId}", projectId);
 
-            var deleted = await _taskService.DeleteAsync(id);
+            var tasks = await _context.Tasks.Where(t => t.ProjectId == projectId).Include(t => t.Engineer).ToListAsync();
 
-            if (!deleted)
+            _logger.LogInformation("Fetched {Count} tasks for ProjectId={ProjectId}", tasks.Count, projectId);
+
+            return tasks;
+        }
+
+        // 5️⃣ UPDATE TASK
+        public async Task<bool> UpdateAsync(int id, UpdateTaskDto task)
+        {
+            _logger.LogInformation("Updating task with Id={TaskId}", id);
+
+            var existingTask = await _context.Tasks.FirstOrDefaultAsync(t => t.TaskItemId == id);
+
+            if (existingTask == null)
             {
-                _logger.LogWarning("Delete failed. Task not found Id={Id}", id);
-                return NotFound();
+                _logger.LogWarning("Update failed. Task not found Id={TaskId}", id);
+                return false;
             }
 
-            return NoContent();
+            existingTask.TaskName = task.TaskName;
+            existingTask.Description = task.Description;
+            existingTask.Status = task.Status;
+            existingTask.DueDate = task.DueDate;
+            existingTask.AssignedTo = task.AssignedTo;
+
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Task updated successfully Id={TaskId}", id);
+
+            return true;
+        }
+
+        // 6️⃣ DELETE TASK
+        public async Task<bool> DeleteAsync(int id)
+        {
+            _logger.LogInformation("Deleting task with Id={TaskId}", id);
+
+            var task = await _context.Tasks.FirstOrDefaultAsync(t => t.TaskItemId == id);
+
+            if (task == null)
+            {
+                _logger.LogWarning("Delete failed. Task not found Id={TaskId}", id);
+                return false;
+            }
+
+            _context.Tasks.Remove(task);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Task deleted successfully Id={TaskId}", id);
+
+            return true;
         }
     }
 }

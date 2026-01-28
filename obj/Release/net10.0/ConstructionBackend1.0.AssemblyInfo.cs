@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ConstructionBackend1.0")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8a0fd213474ff8258d922e54f7f032cd206eae3f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9f4247749092a23e3d0d68a4e8c89a948adcbe46")]
 [assembly: System.Reflection.AssemblyProductAttribute("ConstructionBackend1.0")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ConstructionBackend1.0")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
