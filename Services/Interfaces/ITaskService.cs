@@ -8,7 +8,7 @@ namespace ConstructionBackend1._0.Services.Interfaces
     {
         Task<IEnumerable<ResponseTaskDto>> GetAllTask();
         Task<ResponseTaskDto?> GetTaskById(int id);
-        Task<IEnumerable<TaskItem>> GetTaskByProjectId(int projectId);
+        Task<IEnumerable<ResponseTaskDto>> GetTaskByProjectId(int projectId);
         Task<TaskItem> CreateTask(CreateTaskDto task);
         Task<bool> UpdateAsync(int id, UpdateTaskDto task);
         Task<bool> DeleteAsync(int id);
