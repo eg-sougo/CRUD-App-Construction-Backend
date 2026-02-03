@@ -2,10 +2,12 @@
 using ConstructionBackend1._0.DTOs.Tasks;
 using ConstructionBackend1._0.Models;
 using ConstructionBackend1._0.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructionBackend1._0.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TasksController : ControllerBase

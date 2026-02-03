@@ -1,5 +1,37 @@
 [
   {
+    "ContainingType": "ConstructionBackend1._0.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ConstructionBackend1._0.DTOs.Auth.LoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ConstructionBackend1._0.Controllers.AuthController",
+    "Method": "Register",
+    "RelativePath": "api/Auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "engineer",
+        "Type": "ConstructionBackend1._0.DTOs.Engineers.CreateEngineerDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ConstructionBackend1._0.Controllers.ProjectsController",
     "Method": "GetAllProjects",
     "RelativePath": "api/Projects",

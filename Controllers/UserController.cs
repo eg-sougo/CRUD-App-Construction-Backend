@@ -1,10 +1,12 @@
 ﻿using ConstructionBackend1._0.DTOs.Engineers;
 using ConstructionBackend1._0.Models;
 using ConstructionBackend1._0.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConstructionBackend1._0.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase

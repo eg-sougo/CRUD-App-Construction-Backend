@@ -9,6 +9,10 @@
         public string? PhoneNumber { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+
+        //Authorization Fields
+        public string? HashedPassword { get; set; } = null!;
+
         // Navigation Properties
         public ICollection<Project>? ProjectsCreated { get; set; }
         public ICollection<TaskItem>? TasksAssigned { get; set; }
