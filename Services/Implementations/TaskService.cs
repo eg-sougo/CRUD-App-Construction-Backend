@@ -37,6 +37,8 @@ namespace ConstructionBackend1._0.Services.Implementations
                 };
 
                 _context.Tasks.Add(newTask);
+
+
                 await _context.SaveChangesAsync();
 
                 _logger.LogInformation("Task created successfully with TaskItemId={TaskItemId}", newTask.TaskItemId);

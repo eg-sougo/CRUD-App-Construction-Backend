@@ -9,8 +9,8 @@ namespace ConstructionBackend1._0.Models
         public string Description { get; set; }
         public string Status { get; set; }
 
-        public DateTime StartDate { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset DueDate { get; set; }
 
         // Foreign Keys
         public int ProjectId { get; set; }

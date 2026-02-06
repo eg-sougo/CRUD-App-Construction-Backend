@@ -43,7 +43,7 @@ namespace ConstructionBackend1._0.Controllers
 
         // POST: api/projects
         [HttpPost]
-        public async Task<ActionResult<Project>> CreateProject(CreateProjectDto Dto)
+        public async Task<ActionResult<Project>> CreateProject([FromBody]CreateProjectDto Dto)
         {
             var Project = await _projectService.CreateProject(Dto);
 
@@ -60,7 +60,7 @@ namespace ConstructionBackend1._0.Controllers
 
         // PUT: api/projects
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(int id, UpdateProjectDto dto)
+        public async Task<IActionResult> UpdateProject(int id, [FromBody] UpdateProjectDto dto)
         {
             var updated = await _projectService.UpdateProject(id, dto);
 

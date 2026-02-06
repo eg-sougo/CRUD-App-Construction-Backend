@@ -7,8 +7,8 @@
 
         public string Status { get; set; }
 
-        public DateTime StartDate { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset DueDate { get; set; }
 
         // Project info
         public int ProjectId { get; set; }

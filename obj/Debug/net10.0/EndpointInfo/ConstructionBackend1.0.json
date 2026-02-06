@@ -714,35 +714,53 @@
   "components": {
     "schemas": {
       "CreateEngineerDto": {
+        "required": [
+          "email",
+          "fullName",
+          "password",
+          "phoneNumber"
+        ],
         "type": "object",
         "properties": {
           "fullName": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 100,
+            "minLength": 2,
+            "type": "string"
           },
           "email": {
+            "minLength": 1,
             "type": "string",
-            "nullable": true
+            "format": "email"
           },
           "phoneNumber": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "pattern": "^(?:\\+91[\\-\\s]?|0)?[6-9]\\d{9}$",
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "pattern": "^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,50}$",
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "CreateProjectDto": {
+        "required": [
+          "creatorID",
+          "endDate",
+          "projectName",
+          "startDate"
+        ],
         "type": "object",
         "properties": {
           "projectName": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 3,
+            "type": "string"
           },
           "description": {
+            "maxLength": 1000,
             "type": "string",
             "nullable": true
           },
@@ -755,6 +773,8 @@
             "format": "date-time"
           },
           "creatorID": {
+            "maximum": 2147483647,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           }
@@ -762,13 +782,23 @@
         "additionalProperties": false
       },
       "CreateTaskDto": {
+        "required": [
+          "assignedTo",
+          "dueDate",
+          "projectId",
+          "startDate",
+          "taskName"
+        ],
         "type": "object",
         "properties": {
           "taskName": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 3,
+            "type": "string"
           },
           "description": {
+            "maxLength": 1000,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
@@ -781,10 +811,14 @@
             "format": "date-time"
           },
           "projectId": {
+            "maximum": 2147483647,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           },
           "assignedTo": {
+            "maximum": 2147483647,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           }
@@ -792,15 +826,21 @@
         "additionalProperties": false
       },
       "LoginDto": {
+        "required": [
+          "email",
+          "phoneNumber"
+        ],
         "type": "object",
         "properties": {
           "phoneNumber": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "pattern": "^(?:\\+91[\\-\\s]?|0)?[6-9]\\d{9}$",
+            "type": "string"
           },
           "email": {
+            "minLength": 1,
             "type": "string",
-            "nullable": true
+            "format": "email"
           },
           "password": {
             "type": "string",
@@ -943,22 +983,22 @@
         "additionalProperties": false
       },
       "UpdateEngineerDto": {
-        "required": [
-          "fullName",
-          "phoneNumber"
-        ],
         "type": "object",
         "properties": {
           "fullName": {
+            "maxLength": 100,
+            "minLength": 2,
             "type": "string",
             "nullable": true
           },
           "phoneNumber": {
+            "pattern": "^(?:\\+91|91)?[6-9]\\d{9}$\r\n",
             "type": "string",
             "nullable": true
           },
           "email": {
             "type": "string",
+            "format": "email",
             "nullable": true
           }
         },
@@ -968,14 +1008,20 @@
         "type": "object",
         "properties": {
           "projectName": {
+            "maxLength": 200,
+            "minLength": 3,
             "type": "string",
             "nullable": true
           },
           "description": {
+            "maxLength": 1000,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "status": {
+            "maxLength": 50,
+            "minLength": 1,
             "type": "string",
             "nullable": true
           }
@@ -986,14 +1032,20 @@
         "type": "object",
         "properties": {
           "taskName": {
+            "maxLength": 200,
+            "minLength": 3,
             "type": "string",
             "nullable": true
           },
           "description": {
+            "maxLength": 1000,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "status": {
+            "maxLength": 50,
+            "minLength": 1,
             "type": "string",
             "nullable": true
           },
@@ -1002,6 +1054,8 @@
             "format": "date-time"
           },
           "assignedTo": {
+            "maximum": 2147483647,
+            "minimum": 1,
             "type": "integer",
             "format": "int32"
           }

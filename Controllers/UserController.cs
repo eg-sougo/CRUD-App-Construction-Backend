@@ -40,7 +40,7 @@ namespace ConstructionBackend1._0.Controllers
 
         // POST: api/user/engineers
         [HttpPost("engineers")]
-        public async Task<ActionResult<User>> CreateEngineer(CreateEngineerDto dto)
+        public async Task<ActionResult<User>> CreateEngineer([FromBody] CreateEngineerDto dto)
         {
             var engineer = await _engineerService.CreateEngineer(dto);
 
@@ -53,7 +53,7 @@ namespace ConstructionBackend1._0.Controllers
 
         // PUT: api/user/engineers/{id}
         [HttpPut("engineers/{id}")]
-        public async Task<IActionResult> UpdateEngineer(int id, UpdateEngineerDto dto)
+        public async Task<IActionResult> UpdateEngineer(int id, [FromBody] UpdateEngineerDto dto)
         {
             var updated = await _engineerService.UpdateEngineer(id, dto);
 
