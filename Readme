@@ -1,0 +1,97 @@
+             		
+Construction Project Management API -Training Project
+Project Overview
+The Construction Project Management API is a RESTful backend application built using ASP.NET Core Web API.
+It helps construction teams manage projects, tasks, and engineers/supervisors, while providing secure access using JWT-based authentication.
+This project is part of a construction domain capstone, focusing on clean REST design, validation, authentication, and CRUD operations using a relational database.
+
+Tech Stack
+•	Backend: ASP.NET Core Web API (.NET)
+•	Language: C#
+•	Database: SQL Server
+•	ORM: Entity Framework Core
+•	Authentication: JWT (JSON Web Token)
+•	API Documentation: Swagger
+•	Testing: Postman
+•	Version Control: Git & GitHub
+
+Core Features
+•	JWT-based authentication & authorization
+•	Secure access to protected endpoints
+•	CRUD operations for Projects
+•	CRUD operations for Tasks
+•	CRUD operations for Engineers / Supervisors
+•	Assign tasks to projects and engineers
+•	Track task status (Planned, In Progress, Completed)
+•	Input validation using Data Annotations
+•	REST-compliant endpoints with correct HTTP status codes
+•	Swagger UI for API documentation and testing
+
+
+
+Authentication (JWT)
+•	Users authenticate using login credentials
+•	On successful login, a JWT token is generated
+•	The token must be included in the Authorization header for protected endpoints
+	Authorization: Bearer <JWT_TOKEN>
+•	Unauthorized requests return 401 Unauthorized
+•	Role-based or claim-based authorization can be extended if required
+
+API Endpoints (Overview)
+Authentication
+•	POST /api/auth/login – Authenticate user and generate JWT token
+•	POST /api/auth/register – Register a new user (if enabled)
+Projects
+•	GET /api/projects
+•	GET /api/projects/{id}
+•	POST /api/projects
+•	PUT /api/projects/{id}
+•	DELETE /api/projects/{id}
+Tasks
+•	GET /api/tasks
+•	GET /api/tasks/{id}
+•	GET /api/projects/{projectId}/tasks
+•	POST /api/tasks
+•	PUT /api/tasks/{id}
+•	DELETE /api/tasks/{id}
+Engineers / Supervisors
+•	GET /api/engineers
+•	GET /api/engineers/{id}
+•	POST /api/engineers
+•	PUT /api/engineers/{id}
+•	DELETE /api/engineers/{id}
+
+
+Setup & Execution Steps
+1.	Clone the repository
+2.	git clone https://github.com/eg-sougo/CRUD-App-Construction-Backend.git
+3.	Open the project
+o	Open the solution in Visual Studio
+4.	Configure JWT & Database
+o	Update appsettings.json:
+	Database connection string
+	JWT settings (Issuer, Audience, Secret Key)
+5.	Apply migrations
+6.	Update-Database
+7.	Run the application
+o	Press F5 or run via Visual Studio
+8.	Access Swagger
+9.	https://localhost:{port}/swagger
+10.	Authorize in Swagger
+o	Click Authorize
+o	Enter:
+o	Bearer <JWT_TOKEN>
+
+Key Assumptions
+•	Each task belongs to a single project
+•	Tasks are assigned to one engineer
+•	JWT token is required to access protected endpoints
+•	Authentication is stateless
+•	Role-based authorization is minimal / basic
+
+Future Improvements
+•	Refresh tokens
+•	Role-based access control (Admin / Engineer)
+•	Pagination and filtering
+•	Centralized exception handling
+•	Unit and integration testing
