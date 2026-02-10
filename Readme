@@ -8,10 +8,9 @@ This project is part of a construction domain capstone, focusing on clean REST d
 Tech Stack
 •	Backend: ASP.NET Core Web API (.NET)
 •	Language: C#
-•	Database: SQL Server
+•	Database: PostgreSQL
 •	ORM: Entity Framework Core
 •	Authentication: JWT (JSON Web Token)
-•	API Documentation: Swagger
 •	Testing: Postman
 •	Version Control: Git & GitHub
 
@@ -25,7 +24,7 @@ Core Features
 •	Track task status (Planned, In Progress, Completed)
 •	Input validation using Data Annotations
 •	REST-compliant endpoints with correct HTTP status codes
-•	Swagger UI for API documentation and testing
+•	Swagger UI for testing
 
 
 
@@ -88,10 +87,3 @@ Key Assumptions
 •	JWT token is required to access protected endpoints
 •	Authentication is stateless
 •	Role-based authorization is minimal / basic
-
-Future Improvements
-•	Refresh tokens
-•	Role-based access control (Admin / Engineer)
-•	Pagination and filtering
-•	Centralized exception handling
-•	Unit and integration testing
